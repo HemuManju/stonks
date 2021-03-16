@@ -1,10 +1,6 @@
 import sys
 from contextlib import contextmanager
 
-import torch
-
-from tensorboard import program
-
 
 class SkipWith(Exception):
     pass
@@ -55,20 +51,3 @@ class ColorPrint:
     @staticmethod
     def print_warn(message, end='\n'):
         sys.stderr.write('\x1b[1;33m' + message.strip() + '\x1b[0m' + end)
-
-
-def get_num_gpus():
-    if torch.cuda.device_count() == 0:
-        return None
-    else:
-        return list(range(torch.cuda.device_count()))
-
-
-def launch_tensorboard(hparams):
-    tb = program.TensorBoard()
-    tb.configure(argv=[
-        None, '--logdir', hparams.log_dir, '--reload_multifile', 'true',
-        '--reload_interval', '15'
-    ])
-    tb.launch()
-    return None
