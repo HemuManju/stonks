@@ -50,7 +50,7 @@ class StockData():
         data = yq.get_trending()
         items = []
         df = pd.DataFrame()
-        for i in range(10):
+        for i in range(16):
             items.append(data['quotes'][i]['symbol'])
         df['Symbols'] = items
         return df

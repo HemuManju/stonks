@@ -81,15 +81,22 @@ class MainArea():
         st.dataframe(df.loc[keys, :], height=500)
 
     def plot_history(self):
-        st.header('History')
-        tickers = self.side_car.tickers
-        period = self.side_car.period
-        interval = self.side_car.interval
+        with st.beta_container():
+            col1, col2 = st.beta_columns([6, 1])
+            with col1:
+                st.header('History')
+                tickers = self.side_car.tickers
+                period = self.side_car.period
+                interval = self.side_car.interval
 
-        # Get the data
-        df = self.stock_data.get_data(tickers, period, interval)
-        fig = candlestick_plot(df)
-        st.plotly_chart(fig, use_container_width=True)
+                # Get the data
+                df = self.stock_data.get_data(tickers, period, interval)
+                fig = candlestick_plot(df)
+                st.plotly_chart(fig, use_container_width=True)
+            with col2:
+                st.header('Trending')
+                df = self.stock_data.get_trending()
+                st.dataframe(df, height=425)
 
     def plot_financials(self):
         col1, col2 = st.beta_columns(2)
