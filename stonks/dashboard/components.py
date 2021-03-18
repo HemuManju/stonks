@@ -3,10 +3,6 @@ import streamlit as st
 from .plots import (candlestick_plot, plot_earnings, plot_technical_indicator,
                     plot_balance)
 
-from get_all_tickers import get_tickers as gt
-
-list_of_tickers = gt.get_tickers()
-
 
 class SideBar():
     def __init__(self, stock_data):
@@ -18,7 +14,7 @@ class SideBar():
     def ticker_input(self):
         st.sidebar.header('Symbol')
         self.tickers = st.sidebar.multiselect('Type your symbol',
-                                              options=list_of_tickers,
+                                              options=['GME', 'AAPL', 'TSLA'],
                                               default='GME')
 
     def technical_analysis_input(self):
