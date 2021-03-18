@@ -3,8 +3,12 @@ import streamlit as st
 from .plots import (candlestick_plot, plot_earnings, plot_technical_indicator,
                     plot_balance)
 
+from get_all_tickers import get_tickers as gt
 
-class SideCar():
+list_of_tickers = gt.get_tickers()
+
+
+class SideBar():
     def __init__(self, stock_data):
         self.stock_data = stock_data
         self.ticker_input()
@@ -14,7 +18,7 @@ class SideCar():
     def ticker_input(self):
         st.sidebar.header('Symbol')
         self.tickers = st.sidebar.multiselect('Type your symbol',
-                                              options=['GME', 'AAPL', 'TSLA'],
+                                              options=list_of_tickers,
                                               default='GME')
 
     def technical_analysis_input(self):
@@ -52,8 +56,8 @@ class SideCar():
 
 
 class MainArea():
-    def __init__(self, side_car, stock_data):
-        self.side_car = side_car
+    def __init__(self, side_bar, stock_data):
+        self.side_bar = side_bar
         self.stock_data = stock_data
 
     def _show_yearnings(self):
@@ -85,9 +89,9 @@ class MainArea():
             col1, col2 = st.beta_columns([6, 1])
             with col1:
                 st.header('History')
-                tickers = self.side_car.tickers
-                period = self.side_car.period
-                interval = self.side_car.interval
+                tickers = self.side_bar.tickers
+                period = self.side_bar.period
+                interval = self.side_bar.interval
 
                 # Get the data
                 df = self.stock_data.get_data(tickers, period, interval)
@@ -121,31 +125,31 @@ class MainArea():
         col1, col2 = st.beta_columns(2)
         with col1:
             # Volume indicator
-            key = self.stock_data.volume_indicators[self.side_car.volume]
+            key = self.stock_data.volume_indicators[self.side_bar.volume]
             fig = plot_technical_indicator(df_indicators,
                                            key,
-                                           title=self.side_car.volume)
+                                           title=self.side_bar.volume)
             st.plotly_chart(fig, use_container_width=True)
 
             # Volatility indicator
             key = self.stock_data.volatility_indicators[
-                self.side_car.volatility]
+                self.side_bar.volatility]
             fig = plot_technical_indicator(df_indicators,
                                            key,
-                                           title=self.side_car.volatility)
+                                           title=self.side_bar.volatility)
             st.plotly_chart(fig, use_container_width=True)
 
         with col2:
             # Trend indicator
-            key = self.stock_data.trend_indicators[self.side_car.trend]
+            key = self.stock_data.trend_indicators[self.side_bar.trend]
             fig = plot_technical_indicator(df_indicators,
                                            key,
-                                           title=self.side_car.trend)
+                                           title=self.side_bar.trend)
             st.plotly_chart(fig, use_container_width=True)
 
             # Momentum indicator
-            key = self.stock_data.momentum_indicators[self.side_car.momentum]
+            key = self.stock_data.momentum_indicators[self.side_bar.momentum]
             fig = plot_technical_indicator(df_indicators,
                                            key,
-                                           title=self.side_car.momentum)
+                                           title=self.side_bar.momentum)
             st.plotly_chart(fig, use_container_width=True)

@@ -1,5 +1,5 @@
 import streamlit as st
-from dashboard.components import SideCar, MainArea
+from dashboard.components import SideBar, MainArea
 
 from data.stocks import StockData
 
@@ -12,8 +12,8 @@ st.set_page_config(
 )
 
 stock_data = StockData()
-side_car = SideCar(stock_data)
-stock_plot = MainArea(side_car, stock_data)
+side_bar = SideBar(stock_data)
+stock_plot = MainArea(side_bar, stock_data)
 stock_plot.plot_history()
 stock_plot.plot_technical_indicators()
 stock_plot.plot_financials()
